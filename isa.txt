@@ -1,0 +1,60 @@
+. reg (all 16 bit)
+    . immediate registers (12 bit max word size)
+    AX
+    BX
+
+    . store registers
+    AS
+    BS
+    CS
+    DS
+
+    . subroutine paramter registers
+    AF
+    BF
+    CF
+    DF
+
+    . pointers
+    IP - instruction pointer
+    SP -  current stack pointer
+    BSP - base stack pointer
+
+    zero - stores zero value
+    one - stores all one
+
+
+(independent module)
+. ticks_counter (every frame update - 50 MHz -> 20 ms)   
+    ticks
+
+. ISA
+(2 KB RAM)
+0 (0000) sta - store A to memory directly
+1 (0001) lda - (lda R) load into A from memory (whatever content in register) - 1 if RAM 0 if ROM, 1 if regisValue else if 0 memory address (10 upto inital 1 KB of anymemory)
+        lda_rom_i -> from immediate value (upto 1KB inital mem index)
+        lda_rom -> from register value (16 bit)
+2 (0010) stb - store B to memory directly
+3 (0011) ldb - load into A from memory (2KB only) (whatever content in register) - 1 if ROM 0 if ROM
+        ldb_rom_i
+        ldb_rom
+
+4 (0100) mv - copy reg1 <- reg2 or reg1 <- mem[reg2+offset], to/from PPU_RAM or CPU_RAM
+        mem[reg1+offset] <- reg2
+
+5 (0101) beq - break to address if equal,(R1, R2, R3) address stored in some register
+6 (0110) blt - break if less than (R1, R2, R3)
+
+7 (0111) jump - jump to a specific address, jump mem[R1]
+
+8 (1000) shift - left or right to Reg by 7 bit integer value, default 1
+
+9 (1001) add - R1 <- R1 + R2
+10 (1010) cmp - cmp_flag <- R1 > R2, R1==R2
+
+11 (1011) neg - ~Reg
+12 (1100) and - R1 <- R1 & R2 (bitwise)
+13 (1101) or - R1 <- R1 & R2
+14 (1110) xor - R1 <- R1 ^ R2
+
+15 (1111) nop - no operation
