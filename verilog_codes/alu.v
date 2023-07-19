@@ -1,13 +1,14 @@
 // ALU operations
-`define OP_LOAD_A 4'h0
-`define OP_LOAD_B 4'h1
-`define OP_OR   4'h2
-`define OP_AND  4'h3
-`define OP_XOR  4'h4
-`define OP_ADD  4'h5
-`define OP_CMP	4'h6
-`define OP_NEG  4'h7
+`define OP_LOAD_A 4'h1
+`define OP_LOAD_B 4'h3
 `define OP_SHIFT 4'h8
+`define OP_ADD  4'h9
+`define OP_CMP	4'ha
+`define OP_NEG  4'hb
+`define OP_AND  4'hc
+`define OP_OR   4'hd
+`define OP_XOR  4'he
+
 
 module ALU(A, B, aluop, Y);
 
