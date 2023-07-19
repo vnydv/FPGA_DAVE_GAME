@@ -21,7 +21,7 @@ module motherboard(clk, reset, hsync, vsync, switches, rgb);
     wire [15:0] pu_ram_write;
     wire [15:0] pu_ram_writeenable;
 
-    RAM_DP_pu pu_ram(
+    RAM_DP pu_ram(
         .clk(clk),
         .dout(pu_ram_read),
         .din(pu_ram_write),
