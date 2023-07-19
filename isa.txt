@@ -37,6 +37,13 @@ oppcBIaaaabbbbxx
 1 (0001) lda - (lda R) load into A from memory (whatever content in register) - 1 if RAM 0 if ROM, 1 if regisValue else if 0 memory address (10 upto inital 1 KB of anymemory)
         lda_rom_i -> from immediate value (upto 1KB inital mem index)
         lda_rom -> from register value (16 bit)
+
+        00 lda immediate
+        01 lda #[RAM] -> immediate memory address read from RAM
+        10 lda #[ROM] -> immediate memory address read from ROM
+        11aaaa0 lda RAM[reg] -> read register specified memory address frim RAM
+        11aaaa1 lda ROM[reg] -> read register specified memory address frim ROM
+
 2 (0010) stb - store B to memory directly
 3 (0011) ldb - load into A from memory (2KB only) (whatever content in register) - 1 if ROM 0 if ROM
         ldb_rom_i

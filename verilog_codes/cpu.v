@@ -34,7 +34,9 @@ module CPU16(clk, reset, busy,
     reg [15:0] opcode; // to decode ALU inputs 
     wire [3:0] rdest = opcode[5:2];
     wire [3:0] rsrc = opcode[9:6];
-    wire Bconst = opcode[10]  // ALU B = 10 bit constant (for immediate values) else Bload
+
+    // problem is here -> row to separate ROM and RAM reads apart from immediate values
+    wire Bconst = ~&opcode[11:10]  // ALU B = 10 bit constant (for immediate values) else Bload
     wire Bload = opcode[11]   // ALU B = data_bus to get data in else a register
   
     ALU alu(
