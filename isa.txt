@@ -1,5 +1,5 @@
 . reg (all 16 bit)
-    . immediate registers (12 bit max word size)
+    . immediate registers (12 bit max word size for immediate operation)
     AX
     BX
 
