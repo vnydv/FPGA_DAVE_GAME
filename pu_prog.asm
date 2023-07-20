@@ -34,7 +34,7 @@ jmp .main
     SPRITE_S=0x1b02
     SPRITE_T=0x1c02
 
-    NAMETABLE_TABLE_START_ROM=0x0001
+    NAMETABLE_TABLE_START_ROM=0x0001=0x0001
     NAMETABLE_ROW_COUNT=12
     NAMETABLE_COL_COUNT=20
     
@@ -42,16 +42,16 @@ jmp .main
     # count unitl reach 0
 
     # in RAM
-    NAMETABLE_DATA_COUNT=0x00f0 -> 240
-    RGB_VAL = 0x00f1
+    NAMETABLE_DATA_COUNT=0x0001=40
+    RGB_VAL=0x00f1
 
-    PPU_RAM_READY=0x00f2
-
+    PPU_RAM_READY=0x0002=1
+.end
 # screen in 480 x 640
 
 
 
-0x1fff -> start IP at this address in ROM
+# 0x1fff -> start IP at this address in ROM
 .main:
     
     # set ppu_ram_ready to 0
@@ -61,22 +61,22 @@ jmp .main
     lda zero
     mv AX BS
 
-    lda NAMETABLE_TABLE_START_ROM
-    ldb NAMETABLE_TABLE_START_RAM
+    lda_i NAMETABLE_TABLE_START_ROM
+    ldb_i NAMETABLE_TABLE_START_RAM
 
-    mv lda AS
+    mv AX AS
     # load_name_table into RAM
     .load_name_table:
         lda_rom AS
         sta BX
         
-        add ldb one
+        add BX one
         add AS one
         add BS one
 
         cmp BS NAMETABLE_DATA_COUNT
         blt .load_name_table
-
+    .end
     # set ppu_ram_ready to 1
     # ----
 
@@ -132,4 +132,5 @@ jmp .main
         add AX BX
         ldb_rom AX
         mv BX RGB_VAL
-        
+    .end
+.end        

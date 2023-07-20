@@ -39,10 +39,10 @@ oppcBIaaaabbbbxx
         lda_rom -> from register value (16 bit)
 
         00 lda immediate
-        01 lda #[RAM] -> immediate memory address read from RAM
-        10 lda #[ROM] -> immediate memory address read from ROM
-        11aaaa0 lda RAM[reg] -> read register specified memory address frim RAM
-        11aaaa1 lda ROM[reg] -> read register specified memory address frim ROM
+        10 data_bus selected for data in
+        11 lda #[RAM] -> immediate memory address read from RAM
+        01aaaabbbb0x lda RAM[reg] -> read register specified memory address from RAM
+        01aaaabbbb1x lda ROM[reg] -> read register specified memory address from ROM
 
 2 (0010) stb - store B to memory directly
 3 (0011) ldb - load into A from memory (2KB only) (whatever content in register) - 1 if ROM 0 if ROM
@@ -55,9 +55,9 @@ oppcBIaaaabbbbxx
 5 (0101) beq - break to address if equal,(R1, R2, R3) address stored in some register
 6 (0110) blt - break if less than (R1, R2, R3)
 
-7 (0111) jump - jump to a specific address, jump mem[R1]
+7 (0111) jump - jump to a specific address, jump mem[R1] or mem[#]
 
-8 (1000) shift - left or right to Reg by 7 bit integer value, default 1
+8 (1000) shift - left or right to Reg by 6 bit integer value, default 0
 
 9 (1001) add - R1 <- R1 + R2
 10 (1010) cmp - cmp_flag <- R1 > R2, R1==R2

@@ -1,5 +1,7 @@
-asmFile = "cu_test.asm"
-binFile = "cu_test_rom.bin"
+#asmFile = "cu_test.asm"
+#binFile = "cu_test_rom.bin"
+asmFile = "pu_prog.asm"
+binFile = "pu_prog_rom.bin"
 
 # create a dictionary of max memory, say 10*1024 len
 memory = {i: "1111"+'1'*12 for i in range(1024)}
@@ -70,7 +72,7 @@ for l in fileData:
             a,b,c = _line.split("=")
             b = int(b, 16)
             if 'x' in c:
-                c = int(b, 16)
+                c = int(c, 16)
             else:
                 c = int(c)
         
@@ -91,29 +93,33 @@ for l in fileData:
     iset, *atbr = _line.split(" ")
     print('decoding:',iset, atbr)
 
-    if iset == "jmp":
+    if iset == "sta_i" or iset == "stb_i":
+        # A -> mem12[#]
         b = atbr[0]
-        if b in function_address:
-            memval = "0111" + function_address[b][-12:]
-        else:
-            memval = ["0111",b]
-            unresolved_references.append(memory_pointer)
-
-        memory[memory_pointer] = memval
-
-    elif iset == "lda_rom_i":
+        memval = "0000" if iset == "sta" else "0010"
+        memval += "0" + (defined_address[b])[-11:]
+    
+    elif iset == "sta" or iset == "stb":
+        # A -> mem[R1]
         b = atbr[0]
+        memval = "0000" if iset == "sta" else "0010"
+        memval += "1" + "0000" + (defined_address[b]) + "000"
 
-        if b in defined_address: # always is - the program is wrong
-            # load from rom immediate address - saved as 16 bit value
-            memval = "000111" + (defined_address[b])[-10:]
+    elif iset == "lda" or iset == "ldb" :
+        b = atbr[0]        
+        # ldx mem12[#]
+        memval = "0001" if iset == "sta" else "0011"
+        memval += "00" + (defined_address[b])[-12:]
 
-    elif iset == "ldb_rom_i":
-        b = atbr[0]
+    elif iset == "lda_rom_i" or iset == "ldb_rom_i" :
+        b = atbr[0]        
+        # load from rom immediate address - saved as 16 bit value
+        memval = "000111" + (defined_address[b])[-10:]
 
-        if b in defined_address: # always is - the program is wrong
-            # load from rom immediate address - saved as 16 bit value
-            memval = "001111" + (defined_address[b])[-10:]
+    elif iset == "lda_rom" or iset == "ldb_rom" :
+        b = atbr[0]        
+        # load from rom immediate address - saved as 16 bit value
+        memval = "000111" + (defined_address[b])[-10:]
 
     elif iset == "mv":
         b,c = atbr[0], atbr[1]
@@ -121,13 +127,87 @@ for l in fileData:
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-12)
-        
+
+    elif iset == "jmp":
+        # jmp R1
+        # jmp 0x12f0
+        b = atbr[0]
+        if b in function_address:
+            memval = "0111" + "00" + function_address[b][-12:]
+        elif b in defined_address:
+            # 10 bit
+            memval = "0111" + "01" + defined_address[b] + "0"*6
+        else:
+            memval = ["0111",b]
+            unresolved_references.append(memory_pointer)
+
+    elif iset == "beq":
+        # beq R1
+        # beq 0x12f0
+        b = atbr[0]
+        if b in function_address:
+            memval = "0101" + "00" + function_address[b][-12:]
+        elif b in defined_address:
+            # 10 bit
+            memval = "0101" + "01" + defined_address[b] + "0"*6
+        else:
+            memval = ["0101",b]
+            unresolved_references.append(memory_pointer)
+
+    elif iset == "blt":
+        # beq R1
+        # beq 0x12f0
+        b = atbr[0]
+        if b in function_address:
+            memval = "0110" + "00" + function_address[b][-12:]
+        elif b in defined_address:
+            # 10 bit
+            memval = "0110" + "01" + defined_address[b] + "0"*6
+        else:
+            memval = ["0110",b]
+            unresolved_references.append(memory_pointer)
+
+    elif iset == "neg":
+        b = atbr[0]
+        memval = "1011"+"01"
+        memval += (defined_address[b])
+        memval += (defined_address[b])
+        memval += '0'*(16-14)
+
     elif iset == "add":
         b,c = atbr[0], atbr[1]
-        memval = "1001"
+        memval = "1001"+"01"
         memval += (defined_address[b])
         memval += (defined_address[c])
-        memval += '0'*(16-12)
+        memval += '0'*(16-14)
+
+    elif iset == "cmp":
+        b,c = atbr[0], atbr[1]
+        memval = "1010"+"01"
+        memval += (defined_address[b])
+        memval += (defined_address[c])
+        memval += '0'*(16-14)
+
+    elif iset == "and":
+        b,c = atbr[0], atbr[1]
+        memval = "1100"+"01"
+        memval += (defined_address[b])
+        memval += (defined_address[c])
+        memval += '0'*(16-14)
+
+    elif iset == "or":
+        b,c = atbr[0], atbr[1]
+        memval = "1101"+"01"
+        memval += (defined_address[b])
+        memval += (defined_address[c])
+        memval += '0'*(16-14)
+    
+    elif iset == "xor":
+        b,c = atbr[0], atbr[1]
+        memval = "1110"+"01"
+        memval += (defined_address[b])
+        memval += (defined_address[c])
+        memval += '0'*(16-14)
 
     memory[memory_pointer] = memval
     memory_pointer += 1
@@ -152,5 +232,5 @@ with open(binFile, 'w') as _file:
     for mptr in memory:
         if mptr > memory_pointer: break
         _data = memory[mptr]     
-        print(_data) 
+        print(_data[-16:-12],_data[-12:-10], _data[-10:-6], _data[-6:-2], _data[-2:], "|", _data)
         _file.write(_data + '\n')

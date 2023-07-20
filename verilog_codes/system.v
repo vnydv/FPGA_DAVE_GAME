@@ -54,7 +54,4 @@ module motherboard(clk, reset, hsync, vsync, switches, rgb);
     );
 
 
-
-
-
 endmodule

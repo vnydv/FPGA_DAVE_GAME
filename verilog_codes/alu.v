@@ -1,7 +1,8 @@
 // ALU operations
 `define OP_LOAD_A 4'h1
 `define OP_LOAD_B 4'h3
-`define OP_SHIFT 4'h8
+`define OP_SHIFT_L 4'h7
+`define OP_SHIFT_R 4'h8
 `define OP_ADD  4'h9
 `define OP_CMP	4'ha
 `define OP_NEG  4'hb
@@ -28,14 +29,9 @@ module ALU(A, B, aluop, Y);
       `OP_LOAD_A:       Y = {A};      
       `OP_ADD:          Y = {A + B};      
       `OP_CMP:		Y = {A==B, A<B, 14'b0};
-      `OP_SHIFT:         
-        begin
-          case (B[15])
-            1: Y = {A << B[6:0]};
-            0: Y = {A >> B[6:0]};
-          endcase
-        end
-      
+      `OP_SHIFT_R: Y = {A >> B};
+      `OP_SHIFT_L: Y = {A << B};
+
       default: Y = {16'b0};
     endcase  
 endmodule
