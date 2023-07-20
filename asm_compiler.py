@@ -1,7 +1,7 @@
-# asmFile = "cu_test.asm"
-# binFile = "cu_test_rom.bin"
-asmFile = "pu_prog.asm"
-binFile = "pu_prog_rom.bin"
+asmFile = "cu_test.asm"
+binFile = "cu_test_rom.bin"
+# asmFile = "pu_prog.asm"
+# binFile = "pu_prog_rom.bin"
 
 # create a dictionary of max memory, say 10*1024 len
 memory = {i: "1111"+'1'*12 for i in range(1024)}
@@ -248,7 +248,8 @@ with open(binFile, 'w') as _file:
         _data = memory[mptr]
         print(_data[-16:-12],_data[-12:-10], _data[-10:-6], _data[-6:-2], _data[-2:], "|", _data)
 
-        fdata = f"mem[12'h{(hex(count)[2:]).zfill(3)}]=16'b{_data};"
+        #fdata = f"mem[12'h{(hex(count)[2:]).zfill(3)}]=16'b{_data};"
+        fdata = f"16'h{(hex(int(_data,2))[2:]).zfill(4)}"
 
-        _file.write(fdata + '\n')
+        _file.write(fdata + ',\n')
         count+=1
