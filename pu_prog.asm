@@ -34,7 +34,7 @@ jmp .main
     SPRITE_S=0x1b02
     SPRITE_T=0x1c02
 
-    NAMETABLE_TABLE_START_ROM=0x0001=0x0001
+    NAMETABLE_TABLE_START_ROM=0x0001=1
     NAMETABLE_ROW_COUNT=12
     NAMETABLE_COL_COUNT=20
     
@@ -43,9 +43,11 @@ jmp .main
 
     # in RAM
     NAMETABLE_DATA_COUNT=0x0001=40
-    RGB_VAL=0x00f1
+    RGB_VAL=0x00f1=0xfff
 
     PPU_RAM_READY=0x0002=1
+    vpos=0x0003=12
+    hpos=0x0004=12
 .end
 # screen in 480 x 640
 

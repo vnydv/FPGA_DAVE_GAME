@@ -8,19 +8,38 @@ jmp .main
     # put address in serial order only
     inital_a=0x0001=1
     inital_b=0x0002=3
+    max_counter=0x0003=10
 
     # the sprite pixel data is stored at the end of the file
 
 .end
 # main is defined
 .main:
-    lda_rom_i inital_a
-    ldb_rom_i inital_b
+    # init the counter
+    mv BS zero
+    lda max_counter
+    lda_rom AX
+    mv CS AX
 
+    # load address of a and b
+    lda inital_a
+    ldb inital_b
+
+    # load values of A and B
+    lda_rom AX
+    ldb_rom BX
+
+    # count fibonacci until counter == 10
     .loop:
-        mv AX AS
+        add BS one
+        mv AS AX
         add AX BX
-        mv AS BX
+        mv BX AS
+        cmp BS CS 
+        beq .exit
         jmp .loop
+    .end
+    .exit:
+        nop
     .end
 .end

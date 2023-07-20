@@ -33,5 +33,5 @@ module ALU(A, B, aluop, Y);
       `OP_SHIFT_L: Y = {A << B};
 
       default: Y = {16'b0};
-    endcase  
+    endcase
 endmodule
