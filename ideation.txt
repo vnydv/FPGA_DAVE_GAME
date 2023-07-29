@@ -1,0 +1,27 @@
+50 MHz clock - 4 clk cycles / isa -> 50/4 = 12.5 MHz CPU
+25 MHz VGA - get hpos / vpos - 60 fps
+
+ckt to calc. SpriteIndex
+
+----
+lda NAME_TABLE_ADR      - 2 clk
+add A SPRITE_OFFSET     - 
+
+--- CPU controls movements
+--- Make a PPU no code
+--- direct sprite rendering from nametable
+
+ppu gets hpos vpos - it has it's own sprite ROM
+calculate SpriteAddress and DisplayAddress automatically
+
+-- use a loading screen - (just 1 location in memory)
+-- and a boot module to show booting sequence - nothing else
+-- PU_RAM only has to store NAME_TABLE right from start
+-- gen a signal that it's ready
+-- default initalisation
+
+-- name table is in PU RAM (Dual port)
+-- now cpu can work --
+
+cpu doesn't have to sync with PPU
+-- 

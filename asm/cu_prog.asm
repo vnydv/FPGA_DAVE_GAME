@@ -1,8 +1,9 @@
 ; for RAM
 _define: ;memory regions (replace names with hex address)
-
-
-
+    # fill nametable data after the main program in PU_RAM
+    SPRITE_NAMETABLE_ADR=0x0000    
+    # CU_RAM is dual port
+    player_pos = 
 
 .update_name_table:
 
@@ -43,7 +44,7 @@ _define: ;memory regions (replace names with hex address)
         jmp final
 
         .if_player_lives_zero:
-            str AF, 0
+            lda AX 0
             jmp game_over
             jmp exit
         
