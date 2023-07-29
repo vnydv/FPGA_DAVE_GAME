@@ -1,5 +1,6 @@
-asmFile = "cu_test.asm"
-binFile = "cu_test_rom.bin"
+#asmFile = "cu_test.asm"
+asmFile = "asm/cu_test.asm"
+binFile = "bin/cu_test.bin"
 # asmFile = "pu_prog.asm"
 # binFile = "pu_prog_rom.bin"
 
