@@ -16,13 +16,13 @@ jmp .main
 # main is defined
 .main:
     # load and init init the counter
-    ldaiROM max_counter
+    ldaROM max_counter
     mv BS AX
     mv AS zero
 
     # load values of A and B
-    ldaROM AX
-    ldbROM BX
+    ldaROM inital_a
+    ldbROM inital_b
 
     # count fibonacci until counter == 10
     .loop:

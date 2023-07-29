@@ -1,6 +1,8 @@
 #asmFile = "cu_test.asm"
 asmFile = "asm/cu_test.asm"
 binFile = "bin/cu_test.bin"
+
+binSaveFormat = "easy" # bin, hex, easy
 # asmFile = "pu_prog.asm"
 # binFile = "pu_prog_rom.bin"
 
@@ -139,7 +141,7 @@ for l in fileData:
     elif iset == "mv":
         b,c = atbr[0], atbr[1]
         memval = "0100"
-        memval += "01"
+        memval += "11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '00'
@@ -152,7 +154,7 @@ for l in fileData:
             memval = "0111" + "00" + function_address[b][-10:]
         elif b in defined_address:
             # 10 bit
-            memval = "0111" + "01" + defined_address[b] + "0"*6
+            memval = "0111" + "11" + defined_address[b] + "0"*6
         else:
             memval = ["0111",b]
             unresolved_references.append(memory_pointer)
@@ -165,7 +167,7 @@ for l in fileData:
             memval = "0101" + "00" + function_address[b][-12:]
         elif b in defined_address:
             # 10 bit
-            memval = "0101" + "01" + defined_address[b] + "0"*6
+            memval = "0101" + "11" + defined_address[b] + "0"*6
         else:
             memval = ["0101",b]
             unresolved_references.append(memory_pointer)
@@ -178,21 +180,21 @@ for l in fileData:
             memval = "0110" + "00" + function_address[b][-12:]
         elif b in defined_address:
             # 10 bit
-            memval = "0110" + "01" + defined_address[b] + "0"*6
+            memval = "0110" + "11" + defined_address[b] + "0"*6
         else:
             memval = ["0110",b]
             unresolved_references.append(memory_pointer)
 
     elif iset == "neg":
         b = atbr[0]
-        memval = "1011"+"01"
+        memval = "1011"+"11"
         memval += (defined_address[b])
         memval += (defined_address[b])
         memval += '0'*(16-14)
 
     elif iset == "add":
         b,c = atbr[0], atbr[1]
-        memval = "1001"+"01"
+        memval = "1001"+"11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-14)
@@ -202,28 +204,28 @@ for l in fileData:
 
     elif iset == "cmp":
         b,c = atbr[0], atbr[1]
-        memval = "1010"+"01"
+        memval = "1010"+"11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-14)
 
     elif iset == "and":
         b,c = atbr[0], atbr[1]
-        memval = "1100"+"01"
+        memval = "1100"+"11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-14)
 
     elif iset == "or":
         b,c = atbr[0], atbr[1]
-        memval = "1101"+"01"
+        memval = "1101"+"11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-14)
     
     elif iset == "xor":
         b,c = atbr[0], atbr[1]
-        memval = "1110"+"01"
+        memval = "1110"+"11"
         memval += (defined_address[b])
         memval += (defined_address[c])
         memval += '0'*(16-14)
@@ -256,7 +258,15 @@ with open(binFile, 'w') as _file:
         print(_data[-16:-12],_data[-12:-10], _data[-10:-6], _data[-6:-2], _data[-2:], "|", _data)
 
         #fdata = f"mem[12'h{(hex(count)[2:]).zfill(3)}]=16'b{_data};"
-        fdata = f"16'h{(hex(int(_data,2))[2:]).zfill(4)}"
+        if binSaveFormat == "hex":
+            fdata = f"16'h{(hex(int(_data,2))[2:]).zfill(4)}"
+            _file.write(fdata + ',\n')
+        elif binSaveFormat == "bin":
+            fdata = _data
+            _file.write(fdata + '\n')
+        else:
+            fdata = _data[-16:-12] +' '+_data[-12:-10] +' '+ _data[-10:-6] +' '+ _data[-6:-2] +' '+ _data[-2:] + " | " + _data;
+            _file.write(fdata + '\n')
 
-        _file.write(fdata + ',\n')
+        
         count+=1
