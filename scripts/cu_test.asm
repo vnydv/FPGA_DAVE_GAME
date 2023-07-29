@@ -15,27 +15,28 @@ jmp .main
 .end
 # main is defined
 .main:
-    # init the counter
-    mv BS zero
-    lda max_counter
-    lda_rom AX
-    mv CS AX
-
-    # load address of a and b
-    lda inital_a
-    ldb inital_b
+    # load and init init the counter
+    ldaiROM max_counter
+    mv BS AX
+    mv AS zero
 
     # load values of A and B
-    lda_rom AX
-    ldb_rom BX
+    ldaiROM AX
+    ldbiROM BX
 
     # count fibonacci until counter == 10
     .loop:
-        add BS one
-        mv AS AX
+        # move AX to 3rd var (temp var)
+        mv CS AX
+        # A = A+B
         add AX BX
-        mv BX AS
-        cmp BS CS 
+        # B= temp
+        mv BX CS        
+        # inc. counter
+        add AS one
+        # comp counter with max val
+        cmp BS CS
+        # exit if counter reached
         beq .exit
         jmp .loop
     .end
