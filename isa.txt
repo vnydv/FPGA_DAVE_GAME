@@ -38,8 +38,8 @@ oppcBIaaaabbbbxx
         lda_rom_i -> from immediate value (upto 1KB inital mem index)
         lda_rom -> from register value (16 bit)
 
-        00 ldaiROM immediate value from system RAM
-	01 ldaiRAM immediate value from system ROM
+        00 ldaROM immediate value from system RAM
+	01 ldaRAM immediate value from system ROM
 	10 lda1 MemModule1[#Reg]
 	11 lda2 MemModule2[#Reg]
 

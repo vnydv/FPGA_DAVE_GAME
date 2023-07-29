@@ -21,8 +21,8 @@ jmp .main
     mv AS zero
 
     # load values of A and B
-    ldaiROM AX
-    ldbiROM BX
+    ldaROM AX
+    ldbROM BX
 
     # count fibonacci until counter == 10
     .loop:

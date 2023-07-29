@@ -105,27 +105,33 @@ for l in fileData:
         memval = "0000" if iset == "sta" else "0010"
         memval += "1" + "0000" + (defined_address[b]) + "000"
 
-    elif iset == "lda" or iset == "ldb":
+    elif iset == "ldaRAM" or iset == "ldbRAM":
         b = atbr[0]
-        # ldx mem12[#]
-        memval = "0001" if iset == "lda" else "0011"
+        # ldx mem10[#]
+        memval = "0001" if iset == "ldaRAM" else "0011"
         memval += "00" + (defined_address[b])[-10:]
 
-    elif iset == "lda_ram" or iset == "ldb_ram" :
-        b = atbr[0]        
-        # load from rom immediate address - saved as 16 bit value
-        memval = "0001" if iset == "lda_ram" else "0011"
-        memval += "01"
-        memval += "0000" if iset == "lda_ram" else "0001"
-        memval += (defined_address[b])
-        memval += "00";
-
-    elif iset == "lda_rom" or iset == "ldb_rom" :
+    elif iset == "ldaROM" or iset == "ldbROM":
         b = atbr[0]
-        # load from rom immediate address - saved as 16 bit value
-        memval = "0001" if iset == "lda_rom" else "0011"
+        # ldx mem10[#]
+        memval = "0001" if iset == "ldaROM" else "0011"
+        memval += "01" + (defined_address[b])[-10:]
+
+    elif iset == "lda1" or iset == "ldb1" :
+        b = atbr[0]        
+        # load from memModule1 - saved as 16 bit value
+        memval = "0001" if iset == "lda1" else "0011"
+        memval += "10"
+        memval += "0000" if iset == "lda1" else "0001"
+        memval += (defined_address[b])
+        memval += "00"
+
+    elif iset == "lda2" or iset == "ldb2" :
+        b = atbr[0]        
+        # load from memModule2 - saved as 16 bit value
+        memval = "0001" if iset == "lda2" else "0011"
         memval += "11"
-        memval += "0000" if iset == "lda_rom" else "0001"
+        memval += "0000" if iset == "lda2" else "0001"
         memval += (defined_address[b])
         memval += "00"
 
