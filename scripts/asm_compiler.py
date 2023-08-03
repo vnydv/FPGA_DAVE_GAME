@@ -2,7 +2,7 @@
 asmFile = "asm/cu_test.asm"
 binFile = "bin/cu_test.bin"
 
-binSaveFormat = "easy" # bin, hex, easy
+binSaveFormat = "hex" # hexFmt,bin, hex, easy
 # asmFile = "pu_prog.asm"
 # binFile = "pu_prog_rom.bin"
 
@@ -86,7 +86,7 @@ for l in fileData:
         else: # ec = 1
             a,b = _line.split("=")
             b = int(b, 16)
-            defined_address[a] = b
+            defined_address[a] = (bin(b)[2:]).zfill(16)
 
         continue
 
@@ -103,7 +103,7 @@ for l in fileData:
         memval += "0" + (defined_address[b])[-11:]
     
     elif iset == "sta" or iset == "stb":
-        # A -> mem[R1]
+        # A -> mem[#R1]
         b = atbr[0]
         memval = "0000" if iset == "sta" else "0010"
         memval += "1" + "0000" + (defined_address[b]) + "000"
@@ -261,6 +261,12 @@ with open(binFile, 'w') as _file:
         if binSaveFormat == "hex":
             fdata = f"16'h{(hex(int(_data,2))[2:]).zfill(4)}"
             _file.write(fdata + ',\n')
+
+        elif binSaveFormat == "hexFmt":
+            _memAddr = f"16'h{(hex(count)[2:]).zfill(4)}"
+            fdata = f"16'h{(hex(int(_data,2))[2:]).zfill(4)}"
+            _out_data = f"mem[{_memAddr}]={fdata};"
+            _file.write(_out_data + '\n')
         elif binSaveFormat == "bin":
             fdata = _data
             _file.write(fdata + '\n')

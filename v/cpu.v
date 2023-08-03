@@ -214,7 +214,7 @@ module CPU16(clk, reset, busy,
                 // wait 1 cycle for Data read
                 S_DECODE_WAIT: begin
                     state <= S_DECODE;
-                end
+                end                
                 // wait 1 cycle for ALU
                 S_COMPUTE_WAIT: begin
                     state <= S_COMPUTE;

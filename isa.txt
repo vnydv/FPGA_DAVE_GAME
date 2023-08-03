@@ -35,7 +35,8 @@ B -> 0 -> immediate
 oppcBIxxxxxxxxxx
 oppcBIaaaabbbbxx
 
-0 (0000) sta - store A to memory directly - 0 or 1 -> 0 -> immedidate, 1 -> to a spcified [#Reg] address
+
+0 (0000) sta - store A to memory directly - 0 or 1 ; 0 -> immedidate, 1 -> to a spcified [#Reg] address
 1 (0001) lda - (lda R) load into A from memory (whatever content in register) - 1 if RAM 0 if ROM, 1 if regisValue else if 0 memory address (10 upto inital 1 KB of anymemory)
         lda_rom_i -> from immediate value (upto 1KB inital mem index)
         lda_rom -> from register value (16 bit)
