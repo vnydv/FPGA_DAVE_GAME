@@ -1,0 +1,47 @@
+; 10 bit width
+; assuming 640 x 480 screen dim
+; 32 x 32 sprite size
+; horizontally - 640 / 32 = 20 sprites
+; vertically - 480 / 32  = 15 sprites
+; this is just level sample design -- use python script to get the rest
+
+; MAX jump height is 3 blocks -- 96 px per key - 16 per frame (6 frames)
+; move speed is -- 16 px per key / per frame
+
+; ---------------------------
+
+; const field - sprite W, H(16x16)
+00_0010_0000
+
+; score field
+00_0000_0000
+
+; timer status ; needs 60 Hz timer from 50 MHz -- use appropiately
+00_0000_0000    ;; well not required in RAM ; use separate module
+                ; but set the flags to mark timer active to run it -- if not active then trigger event
+
+; input_buffer loc
+00_0000_0000
+
+; player pos x,y, player status (alive, jumping, falling)
+00_0000_0000
+00_0000_0000
+00_0000_0000
+
+; sprite info - x,y, type(wall, fire, coin, gate, isActive, player)
+; type need mask
+00_0000_0000
+00_0000_0000
+00_0000_0000
+
+00_0000_0000
+00_0000_0000
+00_0000_0000
+
+00_0000_0000
+00_0000_0000
+00_0000_0000
+
+00_0000_0000
+00_0000_0000
+00_0000_0000

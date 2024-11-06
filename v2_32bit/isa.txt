@@ -1,0 +1,46 @@
+`; inst Count = 18 -> 17 --- remove 1 more ?
+
+ 
+; REGISTERS
+R0 - R10    ; general registers
+R_ZERO        ; only 0
+R_PC          ; program counter
+R_NPC         ; next PC
+R_FLAG        ; flag register
+
+; manip
+LOAD reg, immediateValue    ;           #value -> reg
+LOAD reg , [#memAddress]     ; direct    [#memAddress] -> reg
+LOAD reg1, [reg2]           ; indirect  [reg2]  -> reg1
+
+MOV reg1, reg2              ;           reg2 -> reg1
+
+STORE reg, [#memAddress]     ; direct    reg -> [#memaddress]
+STORE [reg2] , reg          ; indirect  --- ? similar to above LOAD
+
+; artihmatic
+ADD reg1, reg2              ; store     r1 + r2 -> r1
+SUB reg1, reg2              ; store     r1 - r2 -> r1   ; use neg first then add
+
+; logical
+NEG reg1                    ;           ~r1 -> r1
+AND reg1, reg2              ;           r1 & r2 -> r1
+OR reg1, reg2               ;           r1 | r2 -> r1
+
+; comp
+COMP_EQ reg1, reg2          ; sets flag bit {ZERO = 1} if equal
+COMP_LESS reg1, reg2        ; sets flag less than if reg1 < reg2
+
+; branch
+BNEQ #address                ; branch not equal to address
+BNEQ [reg]                   ; branch not equal to address in reg
+
+BLT #address                ; branch if less than to address
+BLT [reg]                   ; branch 
+
+; jump
+jump #address               ; jump to address 
+jump [reg]                  ; jump to address in reg -- ?
+
+; do nothing
+nop
